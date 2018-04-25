@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.password.Md4PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
 @Configuration
@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService()).passwordEncoder(new Pbkdf2PasswordEncoder());
+        auth.userDetailsService(userService()).passwordEncoder(new Md4PasswordEncoder());
     }
 	
 	@Override

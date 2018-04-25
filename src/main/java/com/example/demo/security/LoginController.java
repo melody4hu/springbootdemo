@@ -29,11 +29,6 @@ public class LoginController {
 		return "login.html";  
     }  
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)  
-    public String loginFinish() {  
-		return "booklist.html";  
-    }
-	
 	@RequestMapping("/booklist")  
     public String booklist() {  
 		return "booklist.html";  
