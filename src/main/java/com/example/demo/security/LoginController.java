@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.demo.dao.BookDao;
 import com.example.demo.dao.BorrowRelationDao;
@@ -23,14 +24,24 @@ public class LoginController {
 	
 	
 	//Spring boot Security user authentication
-	@RequestMapping("/login.html")  
+	@RequestMapping(value="/login", method=RequestMethod.GET)  
     public String login() {  
 		return "login.html";  
     }  
 	
-	@RequestMapping("/login-error.html")  
+	@RequestMapping(value="/login", method=RequestMethod.POST)  
+    public String loginFinish() {  
+		return "booklist.html";  
+    }
+	
+	@RequestMapping("/booklist")  
+    public String booklist() {  
+		return "booklist.html";  
+    } 
+	
+	@RequestMapping("/loginerror")  
     public String loginError(Model model) {
 		model.addAttribute("loginError", true);
-		return "login.html";  
+		return "loginerror.html";  
     } 
 }
