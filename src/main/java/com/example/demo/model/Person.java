@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;  
   
 @Entity
@@ -34,6 +37,9 @@ public class Person implements Serializable, UserDetails{
      
 	@Column(length=45,nullable=false)
     private String password;
+	
+	@Column(length=45,nullable=false)
+    private String role;
 	
     public Long getId() {  
         return id;  
@@ -59,6 +65,14 @@ public class Person implements Serializable, UserDetails{
         this.name = name;  
     }  
   
+    public String getRole() {  
+        return role;  
+    }  
+  
+    public void setRole(String role) {  
+        this.role = role;  
+    } 
+    
     public String getPassword() {  
         return password;  
     }  
@@ -69,31 +83,28 @@ public class Person implements Serializable, UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		List<GrantedAuthority> auths = new ArrayList<>();
+        auths.add(new SimpleGrantedAuthority(role));
+        return auths;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}    
 } 

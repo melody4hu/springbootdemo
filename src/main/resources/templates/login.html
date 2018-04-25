@@ -7,7 +7,7 @@
 <span style="font-size:18px;"><strong><body>
 	<h1>Login page</h1>
     <p th:if="${loginError}" class="error">Wrong user or password</p>
-    <form action="@{/login}" name="loginfrom" accept-charset="utf-8" method="post">  
+    <form action="/login" th:action="@{/login}" name="loginfrom" accept-charset="utf-8" method="post">  
         <label class="label-tips" for="username">账号:</label>  
         <input type="text" id="username" name="username" class="inputstyle" autofocus="autofocus"/>  
         <div>  
