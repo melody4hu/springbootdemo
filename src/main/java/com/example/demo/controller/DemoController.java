@@ -20,26 +20,28 @@ import com.example.demo.model.Person;
 @RestController
 public class DemoController {
 	
-	@Autowired  
+	@Autowired
     PersonDao personDao;
 	
-	@Autowired  
+	@Autowired
     BookDao bookDao;
     
-	@Autowired  
+	@Autowired
 	BorrowRelationDao borrowRelationDao;
 	
 	@RequestMapping(value="/person", method=RequestMethod.GET)  
     public String PersonControllerByName(String name) {
-		List<Person> result = personDao.findAll();
 		if(name != null) {
-			result = personDao.findByUsername(name);
+			Person person = personDao.findByUsername(name);
+			return "USERNAME: " + person.getUsername() + ";   NAME: " + person.getName() + ";   BORROWEDBOOKS: " + getBorrowedBooks(person.getId()) +"<br/>";
+		} else {
+			List<Person> allPerson = personDao.findAll();
+			String resultStr = "";
+			for (Person person : allPerson) {
+				resultStr = resultStr + "USERNAME: " + person.getUsername() + ";   NAME: " + person.getName() + ";   BORROWEDBOOKS: " + getBorrowedBooks(person.getId()) +"<br/>";
+			}
+			return resultStr;
 		}
-		String resultStr = "";
-		for (Person person : result) {
-			resultStr = resultStr + "USERNAME: " + person.getUsername() + ";   NAME: " + person.getName() + ";   BORROWEDBOOKS: " + getBorrowedBooks(person.getId()) +"<br/>";
-		}
-		return resultStr;
     }
 	
 	private String getBorrowedBooks(Long personid) {
@@ -54,31 +56,34 @@ public class DemoController {
 	
 	@RequestMapping(value="/book", method=RequestMethod.GET)  
     public String BookControllerByName(String name) {
-		List<Book> result = bookDao.findAll();
-		if(name != null) {
-			result = bookDao.findByName(name);
+		if (name != null) {
+			Book book = bookDao.findByName(name);
+			return "NAME: " + book.getName() + ";    BORROWED: " + book.getBorrowed()+"<br/>";
+		} else {
+			List<Book> allBooks = bookDao.findAll();
+			String resultStr = "";
+			for (Book book : allBooks) {
+				resultStr = resultStr + "NAME: " + book.getName() + ";    BORROWED: " + book.getBorrowed()+"<br/>";
+			}
+			return resultStr;
 		}
-		String resultStr = "";
-		for (Book book : result) {
-			resultStr = resultStr + "NAME: " + book.getName() + ";    BORROWED: " + book.getBorrowed()+"<br/>";
-		}
-		return resultStr;
     }
 	
-	@GetMapping("/login")  
-    public ModelAndView login(){  
-        return new ModelAndView("login"); 
-    } 
-	
-	@RequestMapping("/login")  
-    public String login(@RequestParam String username, @RequestParam String password) {  
-        List<Person> personList = personDao.findByUsername(username); 
-        if (personList != null && !personList.isEmpty() &&  personList.get(0).getPassword().equals(password)) {  
-        	return "Login Successfully!"; 
-        } else {  
-            return "Login Failed!";
-        }  
-    }  
+	//Custom user authentication
+//	@GetMapping("/login")  
+//    public ModelAndView login(){  
+//        return new ModelAndView("login"); 
+//    } 
+//	
+//	@RequestMapping("/login")  
+//    public ModelAndView login(@RequestParam String username, @RequestParam String password) {  
+//		Person person = personDao.findByUsername(username); 
+//        if (person != null && person.getPassword().equals(password)) {  
+//        	return new ModelAndView("booklist");
+//        } else {  
+//        	return new ModelAndView("loginerror");
+//        }  
+//    }  
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)  
     public String HomeControllerGet() {  

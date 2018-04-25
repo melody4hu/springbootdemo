@@ -1,17 +1,21 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;  
+import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;  
   
 @Entity
 @Table(name="tb_person")
-public class Person implements Serializable {  
+public class Person implements Serializable, UserDetails{  
   
 	/**
 	 * 
@@ -22,7 +26,7 @@ public class Person implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  
 	
-	@Column(length=45,nullable=false)
+	@Column(name="username", length=45,nullable=false)
     private String username;
 	
 	@Column(length=45,nullable=false)
@@ -61,5 +65,35 @@ public class Person implements Serializable {
   
     public void setPassword(String password) {  
         this.password = password;  
-    }    
+    }
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}    
 } 

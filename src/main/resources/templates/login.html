@@ -1,13 +1,15 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>Login</title>
 </head>
 <body>
-<span style="font-size:18px;"><strong><body>  
-    <form action="/login" name="loginfrom" accept-charset="utf-8" method="post">  
-        <label class="label-tips" for="u">账号:</label>  
-        <input type="text" id="u" name="username" class="inputstyle"/>  
+<span style="font-size:18px;"><strong><body>
+	<h1>Login page</h1>
+    <p th:if="${loginError}" class="error">Wrong user or password</p>
+    <form action="@{/login.html}" name="loginfrom" accept-charset="utf-8" method="post">  
+        <label class="label-tips" for="username">账号:</label>  
+        <input type="text" id="username" name="username" class="inputstyle" autofocus="autofocus"/>  
         <div>  
             <label class="lable-tips" for="password">密码:</label>  
             <input type="password" id="password" name="password" class="inputstyle" />  
@@ -15,7 +17,6 @@
         <input type="submit" name="登录"/>  
         <a href="register.html" class="zcxy" target="_blank">注册</a>  
     </form>
-    <table></table>  
 </body></strong></span>  
 </body>
 </html>
