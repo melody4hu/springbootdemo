@@ -10,5 +10,5 @@ public interface BorrowRelationDao extends JpaRepository<BorrowRelation, Long>{
 	  
     List<BorrowRelation> findByPersonid(Long personid);  
     
-    List<BorrowRelation> findByBookid(Long bookid);  
+    BorrowRelation findByBookid(Long bookid);  
 } 

@@ -37,9 +37,16 @@ public class LoginController {
 		return "login.html";  
     }  
 	
-	@RequestMapping("/booklist")  
-    public String booklist() {  
-		return "booklist.html";  
+	@RequestMapping(value="/booklist", method = RequestMethod.GET)  
+    public ModelAndView booklist(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("loginname", personDao.findByUsername(request.getRemoteUser()).getName());
+		
+		List<Book> bookList = bookDao.findAll();
+		mav.addObject("books", bookList);
+		mav.setViewName("booklist.html");
+		return mav;
     } 
 	
 	@RequestMapping("/loginerror")  
@@ -48,11 +55,36 @@ public class LoginController {
 		return "loginerror.html";  
     } 
 	
+	@RequestMapping(value="/returnbook", method=RequestMethod.POST)  
+    public String returnbook(Long bookid) {
+		borrowRelationDao.delete(borrowRelationDao.findByBookid(bookid));
+		
+		Book book = bookDao.findById(bookid).get();
+		book.setBorrowed(0);
+		bookDao.save(book);
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/borrowthisbook", method=RequestMethod.POST)  
+    public String borrowthisbook(Long bookid, HttpServletRequest request) {
+		Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
+		
+		BorrowRelation br = new BorrowRelation();
+		br.setBookid(bookid);
+		br.setPersonid(userid);
+		borrowRelationDao.save(br);
+		
+		Book book = bookDao.findById(bookid).get();
+		book.setBorrowed(1);
+		bookDao.save(book);
+		return "redirect:/booklist";
+	}
+	
 	@RequestMapping(value="/", method=RequestMethod.GET)  
-    public ModelAndView UserHomeControllerGet(HttpServletRequest request) {
-		String loginAcountid = request.getRemoteUser();
+    public ModelAndView userHomeControllerGet(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
+		String loginAcountid = request.getRemoteUser();
 		mav.addObject("loginname", personDao.findByUsername(loginAcountid).getName());
 		
 		Long personId = personDao.findByUsername(loginAcountid).getId();

@@ -5,18 +5,25 @@
 </head>
 <body>
 <div>
-Hello <b th:text="${loginname}"> </b>
+Hello <b th:text="${loginname}"> </b>!
 </div> <br/><br/><br/>
 
-<label>Your borrowed books:</label><br/>
-<table>
+<label>Your borrowed books:</label><br/><br/>
+<table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+    	<th>书名</th>
+    	<th>是否需要还书？</th>
+    </tr>
 	<tr th:each="book : ${userBooks}">
 	    <td th:text="${book.name}">BookName</td>
-	    <td><input type="submit" name="还书"/></td>
+	    <td><form method="POST" th:action="@{/returnbook(bookid=${book.id})}">
+        <button type="submit">还书</button></form> </td>
 	</tr>
    </table>
    <br/>
-   <input type="submit" name="继续借书"/>
+   <br/>
+   <form method="get" th:action="@{/booklist}">
+      <button type="submit">继续借书》》</button></form> 
 </body>
 </html>
 

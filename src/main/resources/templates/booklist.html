@@ -1,21 +1,33 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>图书列表</title>
+    <title>Book List</title>
 </head>
 <body>
-<span style="font-size:18px;">
-<strong>
-<body>  
-    <table>
-    	<thead>
-    	<tr>书名</tr><tr>在馆</tr>
-    	</thead>
-    	<tbody></tbody>
-    </table>
+<div>
+Hello <b th:text="${loginname}"> </b>!
+</div> <br/><br/><br/>
+
+<label>All books:</label><br/><br/>
+<table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+    	<th>书名               </th>
+    	<th>是否在馆？</th>
+    	<th>是否要借？</th>
+    </tr>
+	<tr th:each="book : ${books}">
+	    <td th:text="${book.name}">BookName</td>
+	    <td th:text="${book.borrowed} == 0 ? '在馆' : '不在馆'"></td>
+	    <td><form th:hidden="${book.borrowed} == 0 ? false : true" method="POST" th:action="@{/borrowthisbook(bookid=${book.id})}">
+        <button type="submit">借书</button></form> </td>
+	    
+	</tr>
+   </table>
+   <br/>
+   <br/>
+   <form method="get" th:action="@{/}">
+      <button type="submit">《《完成</button></form> 
 </body>
-</strong>
-</span>  
 </body>
 </html>
 
