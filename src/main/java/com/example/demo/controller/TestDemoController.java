@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +15,7 @@ import com.example.demo.model.BorrowRelation;
 import com.example.demo.model.Person;
 
 @RestController
-public class DemoController {
+public class TestDemoController {
 	
 	@Autowired
     PersonDao personDao;
@@ -84,9 +82,4 @@ public class DemoController {
 //        }  
 //    }  
 	
-	@RequestMapping(value="/", method=RequestMethod.GET)  
-    public String UserHomeControllerGet(HttpServletRequest request) {
-		request.setAttribute("user_name", request.getSession().getId());
-        return "user.html"; 
-    } 
 }

@@ -6,5 +6,5 @@ import com.example.demo.model.Book;
   
 public interface BookDao extends JpaRepository<Book, Long>{  
 	  
-    Book findByName(String name);  
+    Book findByName(String name);
 } 

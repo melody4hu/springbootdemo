@@ -4,10 +4,19 @@
     <title>User Details</title>
 </head>
 <body>
-<span style="font-size:18px;"><strong><body>
-	<h1><label>Hello </label><label th:text="${user_name}"></label></h1>
-    
-</body></strong></span>  
+<div>
+Hello <b th:text="${loginname}"> </b>
+</div> <br/><br/><br/>
+
+<label>Your borrowed books:</label><br/>
+<table>
+	<tr th:each="book : ${userBooks}">
+	    <td th:text="${book.name}">BookName</td>
+	    <td><input type="submit" name="还书"/></td>
+	</tr>
+   </table>
+   <br/>
+   <input type="submit" name="继续借书"/>
 </body>
 </html>
 
