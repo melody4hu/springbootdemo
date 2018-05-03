@@ -66,7 +66,11 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/borrowthisbook", method=RequestMethod.POST)  
-    public String borrowthisbook(Long bookid, HttpServletRequest request) {
+    public String borrowthisbook(Long bookid, HttpServletRequest request, Model model) {
+		if (borrowRelationDao.findByBookid(bookid) != null) {
+			model.addAttribute("bookborrowed", true); 
+			return "redirect:/booklist";
+		}
 		Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
 		
 		BorrowRelation br = new BorrowRelation();

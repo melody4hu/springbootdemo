@@ -19,7 +19,7 @@ Hello <b th:text="${loginname}"> </b>!
 	    <td th:text="${book.name}">BookName</td>
 	    <td th:text="${book.borrowed} == 0 ? '在馆' : '不在馆'"></td>
 	    <td><form th:hidden="${book.borrowed} == 0 ? false : true" method="POST" th:action="@{/borrowthisbook(bookid=${book.id})}">
-        <button type="submit">借书</button></form> </td>
+        <button type="submit" th:onclick="'javascript:bookhasbeenborrowedFunction(\''+ ${bookborrowed} + '\');'">借书</button></form> </td>
 	    
 	</tr>
    </table>
@@ -29,5 +29,11 @@ Hello <b th:text="${loginname}"> </b>!
       <button type="submit">《《完成</button></form> 
 </body>
 </body>
+<script language="javascript" type="text/javascript">
+function bookhasbeenborrowedFunction(bookborrowed){
+	if (bookborrowed == 'true')
+		alert("您好，这本书已经借出！请重新刷新！");
+}
+</script>
 </html>
 
