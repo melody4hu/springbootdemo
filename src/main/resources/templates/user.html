@@ -5,7 +5,7 @@
 </head>
 <body>
 <div>
-Hello <b th:text="${loginname}"> </b>!
+Hello <b id = "test" th:text="${loginname}"> </b>!
 </div> <br/><br/><br/>
 
 <label>Your borrowed books:</label><br/><br/>
@@ -25,5 +25,6 @@ Hello <b th:text="${loginname}"> </b>!
    <form method="get" th:action="@{/booklist}">
       <button type="submit">继续借书》》</button></form> 
 </body>
+</script>
 </html>
 

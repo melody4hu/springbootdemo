@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Book List</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <div>
@@ -15,12 +16,14 @@ Hello <b th:text="${loginname}"> </b>!
     	<th>是否在馆？</th>
     	<th>是否要借？</th>
     </tr>
-	<tr th:each="book : ${books}">
+	<tr th:each="book : ${books}" th:id=${book.id}>
 	    <td th:text="${book.name}">BookName</td>
 	    <td th:text="${book.borrowed} == 0 ? '在馆' : '不在馆'"></td>
-	    <td><form th:hidden="${book.borrowed} == 0 ? false : true" method="POST" th:action="@{/borrowthisbook(bookid=${book.id})}">
-        <button type="submit" th:onclick="'javascript:bookhasbeenborrowedFunction(\''+ ${bookborrowed} + '\');'">借书</button></form> </td>
+	    <td>
 	    
+	    <form th:hidden="${book.borrowed} == 0 ? false : true" method="POST" th:action="@{/borrowthisbook(bookid=${book.id})}">
+        <button type="submit" th:onclick="'javascript:bookhasbeenborrowedFunction(\''+ ${book.id} + '\');'">借书</button></form>
+	    </td>
 	</tr>
    </table>
    <br/>
@@ -30,10 +33,24 @@ Hello <b th:text="${loginname}"> </b>!
 </body>
 </body>
 <script language="javascript" type="text/javascript">
-function bookhasbeenborrowedFunction(bookborrowed){
-	if (bookborrowed == 'true')
-		alert("您好，这本书已经借出！请重新刷新！");
-}
+function bookhasbeenborrowedFunction(bookid){
+	$.ajax(  
+		    {  
+		        url:"/bookrelationAjax",  
+		        data:{"bookid":bookid},  
+		        type:"get",  
+		        success:function(responseStr)  
+		        {  
+		            if (responseStr != "available") {
+		            	alert("您好，这本书已经借出！请重新刷新！");
+		            }
+		        },  
+		        error: function(req, err, e) {  
+		            alert("error");  
+		        }  
+		    }); 
+	
+};
 </script>
 </html>
 

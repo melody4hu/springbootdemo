@@ -66,21 +66,19 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/borrowthisbook", method=RequestMethod.POST)  
-    public String borrowthisbook(Long bookid, HttpServletRequest request, Model model) {
-		if (borrowRelationDao.findByBookid(bookid) != null) {
-			model.addAttribute("bookborrowed", true); 
-			return "redirect:/booklist";
+    public String borrowthisbook(Long bookid, HttpServletRequest request) {
+		if (borrowRelationDao.findByBookid(bookid) == null) {
+			Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
+			
+			BorrowRelation br = new BorrowRelation();
+			br.setBookid(bookid);
+			br.setPersonid(userid);
+			borrowRelationDao.save(br);
+			
+			Book book = bookDao.findById(bookid).get();
+			book.setBorrowed(1);
+			bookDao.save(book);
 		}
-		Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
-		
-		BorrowRelation br = new BorrowRelation();
-		br.setBookid(bookid);
-		br.setPersonid(userid);
-		borrowRelationDao.save(br);
-		
-		Book book = bookDao.findById(bookid).get();
-		book.setBorrowed(1);
-		bookDao.save(book);
 		return "redirect:/booklist";
 	}
 	
