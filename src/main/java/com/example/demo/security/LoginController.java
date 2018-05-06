@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,32 +56,43 @@ public class LoginController {
 		return "loginerror.html";  
     } 
 	
-	@RequestMapping(value="/returnbook", method=RequestMethod.POST)  
+	@RequestMapping(value="/returnbook", method=RequestMethod.POST) 
     public String returnbook(Long bookid) {
+		returnbookFunc(bookid);
+		return "redirect:/";
+	}
+	
+	@Transactional(readOnly = true) 
+	private void returnbookFunc(Long bookid) {
 		borrowRelationDao.delete(borrowRelationDao.findByBookid(bookid));
 		
 		Book book = bookDao.findById(bookid).get();
 		book.setBorrowed(0);
 		bookDao.save(book);
-		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/borrowthisbook", method=RequestMethod.POST)  
-    public String borrowthisbook(Long bookid, HttpServletRequest request) {
-		if (borrowRelationDao.findByBookid(bookid) == null) {
-			Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
-			
-			BorrowRelation br = new BorrowRelation();
-			br.setBookid(bookid);
-			br.setPersonid(userid);
-			borrowRelationDao.save(br);
-			
-			Book book = bookDao.findById(bookid).get();
-			book.setBorrowed(1);
-			bookDao.save(book);
-		}
-		return "redirect:/booklist";
-	}
+//	@RequestMapping(value="/borrowthisbook", method=RequestMethod.POST)  
+//    public String borrowthisbook(Long bookid, HttpServletRequest request) {
+//		if (borrowRelationDao.findByBookid(bookid) == null) {
+//			
+//			Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
+//			
+//			borrowbookFunc(bookid, userid);
+//		}
+//		return "redirect:/booklist";
+//	}
+//	
+//	@Transactional(readOnly = true) 
+//	private void borrowbookFunc(Long bookid, Long userid) {
+//		BorrowRelation br = new BorrowRelation();
+//		br.setBookid(bookid);
+//		br.setPersonid(userid);
+//		borrowRelationDao.save(br);
+//		
+//		Book book = bookDao.findById(bookid).get();
+//		book.setBorrowed(1);
+//		bookDao.save(book);
+//	}
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)  
     public ModelAndView userHomeControllerGet(HttpServletRequest request) {
