@@ -7,11 +7,13 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD:admin123
+      - MYSQL_ROOT_PASSWORD=admin123
     volumes:
-      - mysql:/docker-entrypoint-initdb.d
+      - ./mysql:/docker-entrypoint-initdb.d
+    expose:
+      - 3306
       
-  services1:
+  service1:
     image: springio/demo
     links:
       - db
@@ -19,7 +21,7 @@ services:
     expose:
       - 8080
     
-  services2:
+  service2:
     image: springio/demo
     links:
       - db
@@ -30,11 +32,11 @@ services:
   nginx:
     image: nginx:stable
     links:
-      - services1
-      - services2
+      - service1
+      - service2
     ports:
       - 8000:80
     volumes:
-      - nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d
     
     
