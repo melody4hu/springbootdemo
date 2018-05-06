@@ -38,7 +38,7 @@ services:
       - service1
       - service2
     ports:
-      - 8000:80
+      - 80:80
     volumes:
       - ./nginx:/etc/nginx/conf.d
     
