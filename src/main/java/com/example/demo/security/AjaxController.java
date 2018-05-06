@@ -2,6 +2,9 @@ package com.example.demo.security;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ import com.example.demo.model.BorrowRelation;
 public class AjaxController {
 	
 	@Autowired
+	private EntityManagerFactory emf;
+	
+	@Autowired
     PersonDao personDao;
 	
 	@Autowired
@@ -34,28 +40,42 @@ public class AjaxController {
 	@RequestMapping(value="/bookrelationAjax", method=RequestMethod.GET)  
 	@ResponseBody
     public String bookrelation(@RequestParam("bookid") Long bookid, HttpServletRequest request) throws IOException {
-		if (borrowRelationDao.findByBookid(bookid) == null) {
-				
-			Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
-			
-			borrowbookFunc(bookid, userid);
+		Long userid =  personDao.findByUsername(request.getRemoteUser()).getId();
+		return borrowbookFunc(bookid, userid);
+	}
 
+	private int getbookBorrowed(Long bookid) {
+		int result = 0;
+		EntityManager entityManager = emf.createEntityManager();
+		entityManager.getTransaction().begin();
+		Book book = entityManager.find(Book.class, bookid, LockModeType.PESSIMISTIC_READ);
+		result = book.getBorrowed();
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return result;
+	}
+	
+	@Transactional
+	private String borrowbookFunc(Long bookid, Long userid) {
+//		Book book = bookDao.getBookByIdForUpdate(bookid);
+		if (getbookBorrowed(bookid) == 0) {
+			EntityManager entityManager = emf.createEntityManager();
+			entityManager.getTransaction().begin();
+			Book book = entityManager.find(Book.class, bookid, LockModeType.PESSIMISTIC_WRITE);
+			book.setBorrowed(1);
+//			bookDao.save(book);
+			entityManager.getTransaction().commit();
+			entityManager.close();
+			
+	        BorrowRelation br = new BorrowRelation();
+			br.setBookid(bookid);
+			br.setPersonid(userid);
+			borrowRelationDao.save(br);
 			return "available";
 		}
 		else {
 			return "nonavailable";
 		}
-	}
-
-	@Transactional(readOnly = true) 
-	private void borrowbookFunc(Long bookid, Long userid) {
-		BorrowRelation br = new BorrowRelation();
-		br.setBookid(bookid);
-		br.setPersonid(userid);
-		borrowRelationDao.save(br);
 		
-		Book book = bookDao.findById(bookid).get();
-		book.setBorrowed(1);
-		bookDao.save(book);
 	}
 }

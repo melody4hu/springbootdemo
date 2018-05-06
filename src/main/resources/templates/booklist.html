@@ -12,11 +12,13 @@ Hello <b th:text="${loginname}"> </b>!
 <label>All books:</label><br/><br/>
 <table border="1" cellspacing="0" cellpadding="0">
     <tr>
+    	<th>Id(NeedRemove)</th>
     	<th>书名               </th>
     	<th>是否在馆？</th>
     	<th>是否要借？</th>
     </tr>
 	<tr th:each="book : ${books}" th:id=${book.id}>
+	    <td th:text="${book.id}">BookId</td>
 	    <td th:text="${book.name}">BookName</td>
 	    <td th:text="${book.borrowed} == 0 ? '在馆' : '不在馆'"></td>
 	    <td>

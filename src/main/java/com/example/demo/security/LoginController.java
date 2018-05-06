@@ -62,7 +62,7 @@ public class LoginController {
 		return "redirect:/";
 	}
 	
-	@Transactional(readOnly = true) 
+	@Transactional
 	private void returnbookFunc(Long bookid) {
 		borrowRelationDao.delete(borrowRelationDao.findByBookid(bookid));
 		

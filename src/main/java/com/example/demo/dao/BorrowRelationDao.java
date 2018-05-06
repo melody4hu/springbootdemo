@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.model.BorrowRelation;  
 
 @Repository
-@Transactional(readOnly = true) 
+@Transactional
 public interface BorrowRelationDao extends JpaRepository<BorrowRelation, Long>{  
 	  
     List<BorrowRelation> findByPersonid(Long personid);  

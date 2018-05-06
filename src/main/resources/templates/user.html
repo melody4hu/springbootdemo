@@ -11,10 +11,12 @@ Hello <b id = "test" th:text="${loginname}"> </b>!
 <label>Your borrowed books:</label><br/><br/>
 <table border="1" cellspacing="0" cellpadding="0">
     <tr>
+    	<th>Id(NeedRemove)</th>
     	<th>书名</th>
     	<th>是否需要还书？</th>
     </tr>
 	<tr th:each="book : ${userBooks}">
+		<td th:text="${book.id}">BookId</td>
 	    <td th:text="${book.name}">BookName</td>
 	    <td><form method="POST" th:action="@{/returnbook(bookid=${book.id})}">
         <button type="submit">还书</button></form> </td>

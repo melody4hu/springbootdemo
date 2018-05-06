@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.model.Role;  
 
 @Repository
-@Transactional(readOnly = true) 
+@Transactional
 public interface RoleDao extends JpaRepository<Role, Long>{  
 	  
 } 

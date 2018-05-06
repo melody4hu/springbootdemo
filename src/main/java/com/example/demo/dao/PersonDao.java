@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.model.Person; 
 
 @Repository
-@Transactional(readOnly = true) 
+@Transactional
 public interface PersonDao extends JpaRepository<Person, Long>{  
 	  
     Person findByUsername(String username);  
