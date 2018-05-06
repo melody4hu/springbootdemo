@@ -8,6 +8,9 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=admin123
+      - MYSQL_DATABASE=springlibrary
+      - MYSQL_USER=springmelody
+      - MYSQL_PASSWORD=springmelody
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
     expose:
